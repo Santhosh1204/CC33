@@ -1,0 +1,17 @@
+package com.helpdesk.ticket.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+
+import com.helpdesk.ticket.dto.TicketDto;
+import com.helpdesk.ticket.entity.Ticket;
+
+@Mapper(componentModel = "spring")
+public interface TicketMapper {
+    TicketDto toDto(Ticket ticket);
+    Ticket toEntity(TicketDto dto);
+
+    List<TicketDto> toDtoList(List<Ticket> tickets);
+}
+

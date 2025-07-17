@@ -1,0 +1,52 @@
+package com.helpdesk.ticket.controller;
+
+import com.helpdesk.ticket.dto.TicketDTO;
+import com.helpdesk.ticket.service.TicketService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+
+@RestController
+@RequestMapping("/api/tickets")
+@RequiredArgsConstructor
+@CrossOrigin
+public class TicketController {
+
+    private final TicketService service;
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody TicketDTO dto) {
+        try {
+            TicketDTO created = service.createTicket(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Failed to create ticket: " + e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAll() {
+        try {
+            List<TicketDTO> allTickets = service.getAllTickets();
+            return ResponseEntity.ok(allTickets);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Failed to fetch tickets: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody TicketDTO dto) {
+        try {
+            TicketDTO updated = service.updateTicket(id, dto);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Failed to update ticket: " + e.getMessage());
+        }
+    }
+}

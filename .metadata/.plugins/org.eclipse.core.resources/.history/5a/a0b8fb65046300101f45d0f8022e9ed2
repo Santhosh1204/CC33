@@ -1,0 +1,43 @@
+package com.helpdesk.ticket.controller;
+
+import com.helpdesk.ticket.dto.TicketDTO;
+import com.helpdesk.ticket.service.TicketService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/tickets")
+@RequiredArgsConstructor
+public class TicketController {
+
+    private final TicketService ticketService;
+
+    @PostMapping
+    public ResponseEntity<TicketDTO> create(@RequestBody TicketDTO dto) {
+        return ResponseEntity.ok(ticketService.createTicket(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TicketDTO> update(@PathVariable Long id, @RequestBody TicketDTO dto) {
+        return ResponseEntity.ok(ticketService.updateTicket(id, dto));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TicketDTO> getOne(@PathVariable Long id) {
+        return ResponseEntity.ok(ticketService.getTicketById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TicketDTO>> getAll() {
+        return ResponseEntity.ok(ticketService.getAllTickets());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        ticketService.deleteTicket(id);
+        return ResponseEntity.noContent().build();
+    }
+}

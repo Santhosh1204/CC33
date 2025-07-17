@@ -1,0 +1,24 @@
+package com.helpdesk.ticket.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
+
+import com.helpdesk.ticket.dto.TicketEventDto;
+import com.helpdesk.ticket.dto.TicketMessageDto;
+
+@Controller
+public class WebSocketEventController {
+    @Autowired private SimpMessagingTemplate messagingTemplate;
+
+    @MessageMapping("/ticket/{id}/message")
+    public void newMessage(@DestinationVariable Long id, TicketMessageDto msg) {
+        messagingTemplate.convertAndSend("/topic/ticket/" + id, msg);
+    }
+
+    public void broadcastUpdate(Long ticketId, TicketEventDto event) {
+        messagingTemplate.convertAndSend("/topic/ticket/" + ticketId, event);
+    }
+}

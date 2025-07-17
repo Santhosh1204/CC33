@@ -1,0 +1,8 @@
+package com.helpdesk.ticket.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.helpdesk.ticket.entity.TicketEvent;
+
+@Repository
+public interface TicketEventRepository extends JpaRepository<TicketEvent, Long> {}

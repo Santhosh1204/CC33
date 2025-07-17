@@ -1,0 +1,70 @@
+package com.helpdesk.ticket.serviceImpl;
+
+import com.helpdesk.ticket.dto.TicketDTO;
+import com.helpdesk.ticket.mapper.TicketMapper;
+import com.helpdesk.ticket.entity.Ticket;
+import com.helpdesk.ticket.repository.TicketRepository;
+import com.helpdesk.ticket.service.TicketService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class TicketServiceImpl implements TicketService {
+
+    private final TicketRepository ticketRepository;
+    private final TicketMapper ticketMapper;
+    private final SimpMessagingTemplate messagingTemplate;
+
+    @Override
+    public TicketDTO createTicket(TicketDTO dto) {
+        Ticket ticket = ticketMapper.toEntity(dto);
+        ticket.setStatus("OPEN");
+        Ticket saved = ticketRepository.save(ticket);
+        TicketDTO result = ticketMapper.toDTO(saved);
+
+        messagingTemplate.convertAndSend("/topic/tickets", result); 
+
+        return result;
+    }
+
+    @Override
+    public TicketDTO updateTicket(Long id, TicketDTO dto) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        ticket.setTitle(dto.getTitle());
+        ticket.setDescription(dto.getDescription());
+        ticket.setStatus(dto.getStatus());
+        ticket.setAssignee(dto.getAssignee());
+
+        Ticket updated = ticketRepository.save(ticket);
+        TicketDTO result = ticketMapper.toDTO(updated);
+
+        messagingTemplate.convertAndSend("/topic/ticket-updates/" + id, result); // Broadcast update
+
+        return result;
+    }
+
+    @Override
+    public TicketDTO getTicketById(Long id) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        return ticketMapper.toDTO(ticket);
+    }
+
+    @Override
+    public List<TicketDTO> getAllTickets() {
+        return ticketRepository.findAll().stream()
+                .map(ticketMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteTicket(Long id) {
+        ticketRepository.deleteById(id);
+    }
+}

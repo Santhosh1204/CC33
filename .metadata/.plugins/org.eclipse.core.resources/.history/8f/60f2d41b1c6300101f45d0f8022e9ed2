@@ -1,0 +1,14 @@
+package com.helpdesk.ticket.mapper;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
+import com.helpdesk.ticket.dto.TicketDTO;
+import com.helpdesk.ticket.entity.Ticket;
+
+@Mapper(componentModel = "spring")
+public interface TicketMapper {
+    TicketMapper INSTANCE = Mappers.getMapper(TicketMapper.class);
+    Ticket toEntity(TicketDTO dto);
+    TicketDTO toDTO(Ticket entity);
+}

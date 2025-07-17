@@ -1,0 +1,34 @@
+package com.helpdesk.ticket.mapper;
+
+import java.util.List;
+
+import org.mapstruct.Mapper;
+
+import com.helpdesk.ticket.dto.TicketCollaboratorDto;
+import com.helpdesk.ticket.dto.TicketDto;
+import com.helpdesk.ticket.dto.TicketEventDto;
+import com.helpdesk.ticket.dto.TicketMessageDto;
+import com.helpdesk.ticket.entity.Ticket;
+import com.helpdesk.ticket.entity.TicketCollaborator;
+import com.helpdesk.ticket.entity.TicketEvent;
+import com.helpdesk.ticket.entity.TicketMessage;
+
+@Mapper(componentModel = "spring")
+public interface TicketMapper {
+    TicketDto toDto(Ticket ticket);
+    Ticket toEntity(TicketDto dto);
+
+    TicketMessageDto toDto(TicketMessage message);
+    TicketMessage toEntity(TicketMessageDto dto);
+
+    TicketEventDto toDto(TicketEvent event);
+    TicketEvent toEntity(TicketEventDto dto);
+
+    TicketCollaboratorDto toDto(TicketCollaborator collaborator);
+    TicketCollaborator toEntity(TicketCollaboratorDto dto);
+
+    List<TicketDto> toDtoList(List<Ticket> tickets);
+    List<TicketMessageDto> toMessageDtoList(List<TicketMessage> messages);
+    List<TicketEventDto> toEventDtoList(List<TicketEvent> events);
+    List<TicketCollaboratorDto> toCollaboratorDtoList(List<TicketCollaborator> collaborators);
+}

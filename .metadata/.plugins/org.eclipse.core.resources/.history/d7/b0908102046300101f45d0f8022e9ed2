@@ -1,0 +1,36 @@
+package com.helpdesk.ticket.controller;
+
+import com.helpdesk.ticket.dto.TicketDTO;
+import com.helpdesk.ticket.service.TicketService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/tickets")
+@RequiredArgsConstructor
+@CrossOrigin
+public class TicketController {
+    private final TicketService service;
+
+    @PostMapping
+    public TicketDTO create(@RequestBody TicketDTO dto) {
+        return service.createTicket(dto);
+    }
+
+    @GetMapping
+    public List<TicketDTO> getAll() {
+        return service.getAllTickets();
+    }
+
+    @PutMapping("/{id}")
+    public TicketDTO update(@PathVariable Long id, @RequestBody TicketDTO dto) {
+        return service.updateTicket(id, dto);
+    }
+}

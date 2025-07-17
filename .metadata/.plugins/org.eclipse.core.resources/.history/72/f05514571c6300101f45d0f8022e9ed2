@@ -1,0 +1,3 @@
+package com.helpdesk.ticket.repository;
+
+public interface TicketMessageRepository extends JpaRepository<TicketMessage, Long> {}

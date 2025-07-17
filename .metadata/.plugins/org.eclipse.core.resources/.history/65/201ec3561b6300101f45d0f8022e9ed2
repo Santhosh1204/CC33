@@ -1,0 +1,17 @@
+package com.helpdesk.ticket.entity;
+
+//TicketCollaborator.java
+@Entity
+@Table(name = "ticket_collaborators", schema = "helpdesk")
+@IdClass(CollaboratorId.class)
+public class TicketCollaborator {
+ @Id
+ private Long ticketId;
+
+ @Id
+ private String username;
+
+ @Column(name = "last_seen")
+ private Instant lastSeen = Instant.now();
+}
+

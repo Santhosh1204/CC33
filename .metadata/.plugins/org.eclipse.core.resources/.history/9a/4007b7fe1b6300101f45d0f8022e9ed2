@@ -1,0 +1,8 @@
+package com.helpdesk.ticket.dto;
+
+public class TicketMessageDto {
+    private Long ticketId;
+    private String sender;
+    private String content;
+}
+

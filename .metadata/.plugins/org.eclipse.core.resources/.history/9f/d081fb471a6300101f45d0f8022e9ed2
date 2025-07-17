@@ -1,0 +1,13 @@
+package com.helpdesk.ticket.entity;
+@Entity
+@Table(name = "tickets", schema = "helpdesk")
+public class Ticket {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String description;
+    private String status;
+    private String assignee;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+}

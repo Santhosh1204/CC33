@@ -1,0 +1,5 @@
+package com.helpdesk.ticket.mapper;
+
+public interface sd {
+
+}

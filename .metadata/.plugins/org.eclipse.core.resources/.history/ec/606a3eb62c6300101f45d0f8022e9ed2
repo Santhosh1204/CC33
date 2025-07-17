@@ -1,0 +1,14 @@
+package com.helpdesk.ticket.dto;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class TicketMessageDto {
+    private Long id;
+    private Long ticketId;
+    private String sender;
+    private String content;
+    private LocalDateTime sentAt;
+}
+

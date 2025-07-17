@@ -1,0 +1,42 @@
+package com.helpdesk.ticket.serviceImpl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class TicketServiceImpl implements TicketService {
+    private final TicketRepository repository;
+    private final TicketMapper mapper;
+    private final SimpMessagingTemplate messagingTemplate;
+
+    @Override
+    public TicketDTO createTicket(TicketDTO dto) {
+        Ticket ticket = mapper.toEntity(dto);
+        ticket.setStatus(TicketStatus.OPEN);
+        Ticket saved = repository.save(ticket);
+        TicketDTO result = mapper.toDTO(saved);
+        messagingTemplate.convertAndSend("/topic/tickets", result);
+        return result;
+    }
+
+    @Override
+    public List<TicketDTO> getAllTickets() {
+        return repository.findAll().stream().map(mapper::toDTO).toList();
+    }
+
+    @Override
+    public TicketDTO updateTicket(Long id, TicketDTO dto) {
+        Ticket existing = repository.findById(id).orElseThrow();
+        existing.setTitle(dto.getTitle());
+        existing.setDescription(dto.getDescription());
+        existing.setAssignee(dto.getAssignee());
+        existing.setStatus(dto.getStatus());
+        Ticket updated = repository.save(existing);
+        TicketDTO result = mapper.toDTO(updated);
+        messagingTemplate.convertAndSend("/topic/ticket/" + id, result);
+        return result;
+    }
+}

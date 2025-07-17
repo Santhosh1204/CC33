@@ -1,0 +1,49 @@
+package com.helpdesk.ticket.entity;
+
+
+import java.io.Serializable;
+import java.util.Objects;
+
+public class CollaboratorId implements Serializable {
+
+    private Long ticketId;
+    private String username;
+
+    // Default constructor
+    public CollaboratorId() {}
+
+    public CollaboratorId(Long ticketId, String username) {
+        this.ticketId = ticketId;
+        this.username = username;
+    }
+
+    // Getters and Setters
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    // equals and hashCode — VERY IMPORTANT for composite keys
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CollaboratorId that)) return false;
+        return Objects.equals(ticketId, that.ticketId) && Objects.equals(username, that.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ticketId, username);
+    }
+}

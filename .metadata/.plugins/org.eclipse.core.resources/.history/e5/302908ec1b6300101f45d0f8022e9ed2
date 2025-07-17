@@ -1,0 +1,17 @@
+package com.helpdesk.ticket.dto;
+
+import com.helpdesk.ticket.entity.TicketStatus;
+
+import lombok.*;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class TicketDTO {
+    private Long id;
+    private String title;
+    private String description;
+    private String assignee;
+    private TicketStatus status;
+}

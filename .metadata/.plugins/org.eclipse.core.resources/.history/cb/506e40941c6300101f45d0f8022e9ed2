@@ -1,0 +1,11 @@
+package com.helpdesk.ticket.service;
+
+import com.helpdesk.ticket.dto.TicketDTO;
+
+import java.util.List;
+
+public interface TicketService {
+	    TicketDTO createTicket(TicketDTO dto);
+	    List<TicketDTO> getAllTickets();
+	    TicketDTO updateTicket(Long id, TicketDTO dto);
+}

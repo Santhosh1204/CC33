@@ -1,0 +1,34 @@
+package com.helpdesk.ticket.controller;
+
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.helpdesk.ticket.dto.MessageDto;
+import com.helpdesk.ticket.service.MessageService;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/messages")
+@RequiredArgsConstructor
+public class MessageController {
+
+    private final MessageService messageService;
+
+    @GetMapping("/ticket/{ticketId}")
+    public ResponseEntity<?> getMessagesByTicketId(@PathVariable Long ticketId) {
+        try {
+            List<MessageDto> messages = messageService.getMessagesByTicket(ticketId);
+            return ResponseEntity.ok(messages);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Ticket not found: " + e.getMessage());
+        }
+    }
+}
+

@@ -1,0 +1,16 @@
+package com.helpdesk.ticket.dto;
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class TicketEventDto {
+    private Long id;
+    private Long ticketId;
+    private String eventType;
+    private String performedBy;
+    private String eventData;
+    private LocalDateTime eventTime;
+}
+
